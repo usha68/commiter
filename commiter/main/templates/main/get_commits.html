@@ -1,0 +1,82 @@
+{% extends 'main/layout.html' %}
+
+{% block title %}Главная страница{% endblock %}
+
+{% block content %}
+    <div class="features">
+        <h1>Информация о доступных проектах</h1>
+    <div class="form-group">
+        <input class="form-control" type="text" placeholder="Search..." id="search"
+               onkeyup='tableSearch("search", "table")'>
+        <table>
+                <thead>
+                    <tr>
+                        {% for chash in overall_header %}
+                        <td>{{ chash }}</td>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for file in overall_changes %}
+                    <tr>
+                        <td>
+                            {{ file.filename }}
+                        </td>
+                        {% for change in file.changes %}
+                            <td>
+                                <span class="added">{{ change.added }}</span>
+                                <span class="deleted">{{ change.deleted }}</span>
+                            </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        {% for file in files_with_changes %}
+        <div>
+            <h3> {{ file.filename }}</h3>
+            <table id="table" class="table table-dark hover">
+                <thead>
+                    <tr>
+                        <td>ID коммита</td>
+                        <td>Добавлено</td>
+                        <td>Удалено</td>
+                    </tr>
+                    </thead>
+                <tbody>
+                {% for change in file.changes %}
+                    <tr>
+                        <td>{{ change.commit.short_id }}</td>
+                        <td>{{ change.added }}</td>
+                        <td>{{ change.deleted }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endfor %}
+
+    </div>
+    </div>
+<script type="text/javascript">
+    function tableSearch(input_id, table_id) {
+        const phrase = document.getElementById(input_id);
+        const table = document.getElementById(table_id);
+        const regPhrase = new RegExp(phrase.value, 'i');
+        let flag = false;
+        for (let i = 1; i < table.rows.length; i++) {
+            flag = false;
+            for (let j = table.rows[i].cells.length - 1; j >= 0; j--) {
+                flag = regPhrase.test(table.rows[i].cells[j].innerHTML);
+                if (flag) break;
+            }
+            if (flag) {
+                table.rows[i].style.display = "";
+            } else {
+                table.rows[i].style.display = "none";
+            }
+    }
+}
+</script>
+{% endblock %}

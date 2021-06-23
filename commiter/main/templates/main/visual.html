@@ -1,0 +1,21 @@
+{% extends 'main/layout.html' %}
+
+{% block title %}Визуализация успеваемости{% endblock %}
+
+{% block content %}
+<title>Django Forms</title>
+    <div class="features">
+        <h1>Введите ID проекта</h1>
+        <body>
+            <form method="POST">
+                {% csrf_token %}
+                    <table>
+                        {{ form }}
+                    </table>
+                    <input type="submit" value="Send" >
+            </form>
+        </body>
+    </div>
+{% endblock %}
+
+

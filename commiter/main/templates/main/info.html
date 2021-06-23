@@ -1,0 +1,59 @@
+{% extends 'main/layout.html' %}
+
+{% block title %}Информация о проектах{% endblock %}
+
+{% block content %}
+<title>Django Forms</title>
+<div class="features">
+    <h1>Информация о доступных проектах</h1>
+    <div>
+        <input class="form-control" type="text" placeholder="Search..." id="search"
+               onkeyup='tableSearch("search", "table")'>
+        <table id="table" class="table table-dark hover">
+            {{ form }}
+            <thead>
+            <tr>
+                <td>ID проекта</td>
+                <td>Абсолютный путь к проекту</td>
+                <td>Относительный путь к проекту</td>
+                <td>Имя проекта</td>
+            </tr>
+            </thead>
+            <tbody>
+            {% for row in data %}
+            <tr>
+                <td><a href="{% url 'get_commits' row.0 %}">{{ row.0 }}</a></td>
+                <td>{{ row.1 }}</td>
+                <td>{{ row.2 }}</td>
+                <td>{{ row.3 }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    function tableSearch(input_id, table_id) {
+        const phrase = document.getElementById(input_id);
+        const table = document.getElementById(table_id);
+        const regPhrase = new RegExp(phrase.value, 'i');
+        let flag = false;
+        for (let i = 1; i < table.rows.length; i++) {
+            flag = false;
+            for (let j = table.rows[i].cells.length - 1; j >= 0; j--) {
+                flag = regPhrase.test(table.rows[i].cells[j].innerHTML);
+                if (flag) break;
+            }
+            if (flag) {
+                table.rows[i].style.display = "";
+            } else {
+                table.rows[i].style.display = "none";
+            }
+    }
+}
+</script>
+{% endblock %}
+
+

@@ -1,0 +1,14 @@
+{% extends 'main/layout.html' %}
+
+{% block title %}Список доступных проектов{% endblock %}
+
+{% block content %}
+    <div class="features">
+        <h1>Список доступных проектов</h1>
+        {% for el in dict_project %}
+            <p>{{ el }}</p>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+
